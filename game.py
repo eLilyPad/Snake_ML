@@ -32,7 +32,7 @@ BLUE2 = (0, 100, 255)
 BLACK = (0,0,0)
 
 BLOCK_SIZE = 20
-SPEED = 100
+SPEED = 130
 
 class SnakeGameAI:
     
@@ -135,7 +135,21 @@ class SnakeGameAI:
         text = font.render("Score: " + str(self.score), True, WHITE)
         self.display.blit(text, [0, 0])
         pygame.display.flip()
+
+    def point_from_head(self, direction, distance = 1):
+        head = self.snake[0]
+        offset = BLOCK_SIZE * distance
         
+        if direction == Direction.LEFT:
+            return Point(head.x - offset, head.y)
+        elif direction == Direction.RIGHT:
+            return Point(head.x + offset, head.y)
+        elif direction == Direction.UP:
+            return Point(head.x, head.y - offset)
+        elif direction == Direction.DOWN:
+            return Point(head.x, head.y + offset)
+        
+    
     def _move(self, action):
         # [straight, left, right]
 

@@ -1,6 +1,7 @@
 import torch
 import random
 import numpy as np
+from enum import Enum
 from collections import deque
 from game import SnakeGameAI, Direction, Point
 from model import Linear_QNet, QTrainer
@@ -11,13 +12,18 @@ MAX_MEMORY = 100_000
 BATCH_SIZE = 1000
 LEARNING_RATE = 0.001
 
+class Danger(Enum):
+    STRAIGHT = 1
+    LEFT = 2
+    RIGHT = 3
+
 class Agent:
     def __init__(self):
         self.n_games = 0
         self.epsilon = 0 # randomness
         self.gamma = 0.9 # discount rate. must be smaller then ones
         self.memory = deque(maxlen = MAX_MEMORY)
-        self.model = Linear_QNet(11, 23, 3)
+        self.model = Linear_QNet(14, 23, 3)
         self.trainer = QTrainer(self.model, learning_rate=LEARNING_RATE, gamma=self.gamma)
 
         if os.path.exists('model/model.pth'):
@@ -25,36 +31,48 @@ class Agent:
             self.model.eval()
 
     def get_state(self, game):
-        block_size = 20
-        head = game.snake[0]
-        point_left = Point(head.x - block_size, head.y)
-        point_right = Point(head.x + block_size, head.y)
-        point_up = Point(head.x, head.y - block_size)
-        point_down = Point(head.x, head.y + block_size)
+
+        # point_left = Point(head.x - block_size, head.y)
+        # point_right = Point(head.x + block_size, head.y)
+        # point_up = Point(head.x, head.y - block_size)
+        # point_down = Point(head.x, head.y + block_size)
 
         direction_left = game.direction == Direction.LEFT
         direction_right = game.direction == Direction.RIGHT
         direction_up = game.direction == Direction.UP
         direction_down = game.direction == Direction.DOWN
 
+        def danger_check(self, direction, distance = 1):
+            point_left = game.point_from_head(Direction.LEFT, distance)
+            point_right = game.point_from_head(Direction.RIGHT, distance)
+            point_up = game.point_from_head(Direction.UP, distance)
+            point_down = game.point_from_head(Direction.DOWN, distance)
+
+            col_points = [direction_right, direction_left, direction_up, direction_down] # Danger Straight
+            if direction == Danger.LEFT:
+                col_points = [direction_down, direction_up, direction_left, direction_right]
+            elif direction == Danger.RIGHT:
+                col_points = [direction_up, direction_down, direction_left, direction_right]
+
+            return (
+                (col_points[0] and game.is_collision(point_right)) or
+                (col_points[1] and game.is_collision(point_left)) or
+                (col_points[2] and game.is_collision(point_up)) or
+                (col_points[3] and game.is_collision(point_down))
+            )
+
         state = [
             # Danger Straight
-            (direction_right and game.is_collision(point_right)) or
-            (direction_left and game.is_collision(point_left)) or
-            (direction_up and game.is_collision(point_up)) or
-            (direction_down and game.is_collision(point_down)),
+            danger_check(Danger.STRAIGHT, 1),
+            danger_check(Danger.STRAIGHT, 2),
             
             # Danger Right
-            (direction_up and game.is_collision(point_right)) or
-            (direction_down and game.is_collision(point_left)) or
-            (direction_left and game.is_collision(point_up)) or
-            (direction_right and game.is_collision(point_down)),
+            danger_check(Danger.RIGHT, 1),
+            danger_check(Danger.RIGHT, 2),
             
             # Danger Left
-            (direction_down and game.is_collision(point_right)) or
-            (direction_up and game.is_collision(point_left)) or
-            (direction_left and game.is_collision(point_up)) or
-            (direction_right and game.is_collision(point_down)),
+            danger_check(Danger.LEFT, 1),
+            danger_check(Danger.LEFT, 2),
 
             # Move Directions
             direction_left,
@@ -67,6 +85,7 @@ class Agent:
             game.food.x > game.head.x, # food right 
             game.food.y < game.head.y, # food up
             game.food.y > game.head.y # food down
+            # knows the foods direction but only knows if danger is directly next to it 
         ]
         
         return np.array(state, dtype=int)
@@ -92,7 +111,7 @@ class Agent:
 
     def get_action(self, state):
         # start off with random moves for exploration
-        self.epsilon = 0#80 - self.n_games
+        self.epsilon = 20 - self.n_games
         final_move = [0, 0, 0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0, 2)
@@ -135,7 +154,7 @@ def train():
                 best_score = score
                 agent.model.save()
 
-            print('Game', agent.n_games, 'Score:', score, 'Record:', best_score, 'Reward:', reward)
+            print('Game', agent.n_games, 'Score:', score, 'Record:', best_score)
 
             plot_scores.append(score)
             total_score += score
