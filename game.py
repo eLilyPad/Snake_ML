@@ -110,10 +110,11 @@ class CellGrid:
         self.height = height
         self.display = display
 
-    def _create_grid(self):
+    def create_grid(self):
         cells = []
         for x, y in zip(self.width, self.height):
             cells.append(Cell(x, y, self.display))
+        return cells
 
     def get_cell(self, x, y):
         pass
