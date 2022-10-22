@@ -58,6 +58,9 @@ class Direction(Enum):
     UP = 3
     DOWN = 4
     
+class Cell:
+    coord 
+
 Point = namedtuple('Point', 'x, y')
 
 # rgb colors
