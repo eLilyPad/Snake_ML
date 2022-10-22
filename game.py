@@ -58,12 +58,23 @@ class Direction(Enum):
     UP = 3
     DOWN = 4
     
+class CellType(Enum):
+    BG = 1
+    SNAKE = 2
+    FOOD = 3
+
 class Cell:
-    def __init__(self, x, y):
+    def __init__(self, x, y, cell_type = CellType.BG):
         self.coord = (x, y)
+        self.cell_type = cell_type
     
-    def __update__(self, cell_type):
-        pass
+    def _update_ui(self):
+        if cell_type == CellType.BG:
+            pass
+        elif cell_type == CellType.SNAKE:
+            pass
+        elif cell_type == CellType.FOOD:
+
 
 
 Point = namedtuple('Point', 'x, y')
