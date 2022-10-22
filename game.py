@@ -59,7 +59,8 @@ class Direction(Enum):
     DOWN = 4
     
 class Cell:
-    coord 
+    coord = (0, 0)
+    
 
 Point = namedtuple('Point', 'x, y')
 
