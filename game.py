@@ -59,8 +59,12 @@ class Direction(Enum):
     DOWN = 4
     
 class Cell:
-    coord = (0, 0)
+    def __init__(self, x, y):
+        self.coord = (x, y)
     
+    def __update__(self, cell_type):
+        pass
+
 
 Point = namedtuple('Point', 'x, y')
 
