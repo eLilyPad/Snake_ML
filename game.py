@@ -119,8 +119,10 @@ class CellGrid:
     def get_cell(self, x, y):
         pass
 
-    def set_cell_state(self, state):
+    def set_cell_state(self, cell, state):
         pass
+
+    
 
 
 class SnakeGameAI:
