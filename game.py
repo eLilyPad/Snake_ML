@@ -76,14 +76,14 @@ class Cell:
         elif self.cell_type == CellType.SNAKE:
             self._draw_snake()
         elif self.cell_type == CellType.FOOD:
-            pass
+            self._draw_food()
 
     def _draw_snake(self):
         pygame.draw.rect(self.display, BLUE1, pygame.Rect(self.coord.x, self.coord.y, self.size, self.size))
         pygame.draw.rect(self.display, BLUE2, pygame.Rect(self.coord.x, self.coord.y, 12, 12))
 
     def _draw_food(self):
-        pygame.draw.rect(self.display, RED, pygame.Rect(self.food.x, self.food.y, self.size, self.size))
+        pygame.draw.rect(self.display, RED, pygame.Rect(self.coord.x, self.coord.y, self.size, self.size))
 
 
 
