@@ -68,13 +68,17 @@ class Cell:
         self.coord = (x, y)
         self.cell_type = cell_type
     
-    def _update_ui(self):
+    def update_ui(self):
         if self.cell_type == CellType.BG:
             pass
         elif self.cell_type == CellType.SNAKE:
-            pass
+            self._draw_snake()
         elif self.cell_type == CellType.FOOD:
             pass
+
+    def _draw_snake(self):
+        pygame.draw.rect(self.display, BLUE1, pygame.Rect(self.coord.x, self.coord.y, BLOCK_SIZE, BLOCK_SIZE))
+        pygame.draw.rect(self.display, BLUE2, pygame.Rect(self.coord.x, self.coord.y, 12, 12))
 
 
 
