@@ -23,20 +23,17 @@ class Agent:
         self.epsilon = 0 # randomness
         self.gamma = 0.9 # discount rate. must be smaller then ones
         self.memory = deque(maxlen = MAX_MEMORY)
-        self.model = Linear_QNet(14, 23, 3)
+
+        self.q_net_in = 11 # number of input states from the neural network
+        self.model = Linear_QNet(self.q_net_in, 23, 3)
         self.trainer = QTrainer(self.model, learning_rate=LEARNING_RATE, gamma=self.gamma)
 
-        if os.path.exists('model/model.pth'):
-            self.model.load_state_dict(torch.load('model/model.pth'))
+        self.model_name = f'model/model_{self.q_net_in}.pth'
+        if os.path.exists(self.model_name):
+            self.model.load_state_dict(torch.load(self.model_name))
             self.model.eval()
 
     def get_state(self, game):
-
-        # point_left = Point(head.x - block_size, head.y)
-        # point_right = Point(head.x + block_size, head.y)
-        # point_up = Point(head.x, head.y - block_size)
-        # point_down = Point(head.x, head.y + block_size)
-
         direction_left = game.direction == Direction.LEFT
         direction_right = game.direction == Direction.RIGHT
         direction_up = game.direction == Direction.UP
@@ -64,15 +61,15 @@ class Agent:
         state = [
             # Danger Straight
             danger_check(Danger.STRAIGHT, 1),
-            danger_check(Danger.STRAIGHT, 2),
+            # danger_check(Danger.STRAIGHT, 2),
             
             # Danger Right
             danger_check(Danger.RIGHT, 1),
-            danger_check(Danger.RIGHT, 2),
+            # danger_check(Danger.RIGHT, 2),
             
             # Danger Left
             danger_check(Danger.LEFT, 1),
-            danger_check(Danger.LEFT, 2),
+            # danger_check(Danger.LEFT, 2),
 
             # Move Directions
             direction_left,
@@ -111,7 +108,7 @@ class Agent:
 
     def get_action(self, state):
         # start off with random moves for exploration
-        self.epsilon = 20 - self.n_games
+        self.epsilon = 0#20 - self.n_games
         final_move = [0, 0, 0]
         if random.randint(0, 200) < self.epsilon:
             move = random.randint(0, 2)
@@ -152,7 +149,7 @@ def train():
 
             if score > best_score:
                 best_score = score
-                agent.model.save()
+                agent.model.save(agent.model_name)
 
             print('Game', agent.n_games, 'Score:', score, 'Record:', best_score)
 

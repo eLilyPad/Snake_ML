@@ -1,8 +1,11 @@
+import json
+import os
 import pygame
 import random
 from enum import Enum
 from collections import namedtuple
 import numpy as np
+from dataclasses import dataclass
 
 pygame.init()
 font = pygame.font.Font('arial.ttf', 25)
@@ -15,6 +18,39 @@ play(action) -> direction
 game_iteration
 is_collision
 '''
+
+# @dataclasses
+# class Data:
+#     # Windows
+#     screen_width = 640
+#     screen_height = 480
+
+#     BLOCK_SIZE = 20
+#     SPEED = 100
+
+#     #Colours
+#     WHITE = (255, 255, 255)
+#     RED = (200,0,0)
+#     BLUE1 = (0, 0, 255)
+#     BLUE2 = (0, 100, 255)
+#     BLACK = (0,0,0)
+
+
+
+#     def __init__(self):
+#         data = {}
+
+#     def save(self, file_name = 'gamedata.json', data = {}):
+#         json_string = json.dumps(data)
+#         folder_path = './game'
+#         file_path = os.path.join(folder_path, file_name)
+#         json_file = open(file_path, 'w')
+
+#         if not os.path.exists(folder_path):
+#             os.mkdir(folder_path)
+
+#         json_file.write(json_string)
+#         json_file.close()
 
 class Direction(Enum):
     RIGHT = 1
@@ -31,11 +67,12 @@ BLUE1 = (0, 0, 255)
 BLUE2 = (0, 100, 255)
 BLACK = (0,0,0)
 
+# The size of the cells in the grid
 BLOCK_SIZE = 20
-SPEED = 130
+# The tickrate 
+SPEED = 130 
 
 class SnakeGameAI:
-    
     def __init__(self, w=640, h=480):
         self.w = w
         self.h = h
@@ -47,7 +84,6 @@ class SnakeGameAI:
         # init game state
         self.reset_game()
         
-
     def reset_game(self):
         self.direction = Direction.RIGHT
         
@@ -148,8 +184,7 @@ class SnakeGameAI:
             return Point(head.x, head.y - offset)
         elif direction == Direction.DOWN:
             return Point(head.x, head.y + offset)
-        
-    
+          
     def _move(self, action):
         # [straight, left, right]
 
