@@ -64,9 +64,11 @@ class CellType(Enum):
     FOOD = 3
 
 class Cell:
-    def __init__(self, x, y, cell_type = CellType.BG):
+    def __init__(self, x, y, display, size, cell_type = CellType.BG):
         self.coord = (x, y)
         self.cell_type = cell_type
+        self.size = size
+        self.display = display
     
     def update_ui(self):
         if self.cell_type == CellType.BG:
@@ -77,8 +79,11 @@ class Cell:
             pass
 
     def _draw_snake(self):
-        pygame.draw.rect(self.display, BLUE1, pygame.Rect(self.coord.x, self.coord.y, BLOCK_SIZE, BLOCK_SIZE))
+        pygame.draw.rect(self.display, BLUE1, pygame.Rect(self.coord.x, self.coord.y, self.size, self.size))
         pygame.draw.rect(self.display, BLUE2, pygame.Rect(self.coord.x, self.coord.y, 12, 12))
+
+    def _draw_food(self):
+        pygame.draw.rect(self.display, RED, pygame.Rect(self.food.x, self.food.y, self.size, self.size))
 
 
 
