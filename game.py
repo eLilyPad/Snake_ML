@@ -69,11 +69,12 @@ class Cell:
         self.cell_type = cell_type
     
     def _update_ui(self):
-        if cell_type == CellType.BG:
+        if self.cell_type == CellType.BG:
             pass
-        elif cell_type == CellType.SNAKE:
+        elif self.cell_type == CellType.SNAKE:
             pass
-        elif cell_type == CellType.FOOD:
+        elif self.cell_type == CellType.FOOD:
+            pass
 
 
 
