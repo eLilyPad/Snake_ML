@@ -83,6 +83,10 @@ class Cell:
         self.cell_type = cell_type
         self.size = size
         self.display = display
+
+    def set_type(self, cell_type):
+        self.cell_type = cell_type
+        self.update_ui()
     
     def update_ui(self):
         if self.cell_type == CellType.BG:
@@ -122,8 +126,9 @@ class CellGrid:
                 return cell
 
     def set_cell_type(self, cell, cell_type):
-        cell.cell_type = cell_type
-        cell.update_ui()
+        cell.set_type(cell_type)
+
+    
 
 
 
