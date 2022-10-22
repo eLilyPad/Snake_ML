@@ -109,15 +109,17 @@ class CellGrid:
         self.width = width
         self.height = height
         self.display = display
-        self.grid = self._create_grid()
 
     def _create_grid(self):
         cells = []
         for x, y in zip(self.width, self.height):
             cells.append(Cell(x, y, self.display))
 
+    def get_cell(self, x, y):
+        pass
 
-
+    def set_cell_state(self, state):
+        pass
 
 
 class SnakeGameAI:
