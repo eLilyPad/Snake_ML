@@ -93,11 +93,29 @@ class Cell:
             self._draw_food()
 
     def _draw_snake(self):
-        pygame.draw.rect(self.display, BLUE1, pygame.Rect(self.coord.x, self.coord.y, self.size, self.size))
-        pygame.draw.rect(self.display, BLUE2, pygame.Rect(self.coord.x, self.coord.y, 12, 12))
+        self._draw_cell(BLUE1, self.size)
+        self._draw_cell(BLUE2, self.size, self.size - 8)
 
     def _draw_food(self):
-        pygame.draw.rect(self.display, RED, pygame.Rect(self.coord.x, self.coord.y, self.size, self.size))
+        self._draw_cell(RED, self.size)
+
+    def _draw_cell(self, colour, scale):
+        pygame.draw.rect(self.display, colour, pygame.Rect(self.coord.x, self.coord.y, scale, scale))
+
+
+class CellGrid:
+    def __init__(self, display, scale = 1, width = 64, height = 48):
+        self.scale = scale
+        self.width = width
+        self.height = height
+        self.display = display
+        self.grid = self._create_grid()
+
+    def _create_grid(self):
+        cells = []
+        for x, y in zip(self.width, self.height):
+            cells.append(Cell(x, y, self.display))
+
 
 
 
