@@ -77,58 +77,64 @@ BLOCK_SIZE = 20
 # The tickrate 
 SPEED = 130 
 
-class Cell:
-    def __init__(self, x, y, display, size, cell_type = CellType.BG):
-        self.coord = (x, y)
-        self.cell_type = cell_type
-        self.size = size
-        self.display = display
+# class Cell:
+#     def __init__(self, x, y, display, size, cell_type = CellType.BG):
+#         self.coord = (x, y)
+#         self.cell_type = cell_type
+#         self.size = size
+#         self.display = display
 
-    def set_type(self, cell_type):
-        self.cell_type = cell_type
-        self.update_ui()
+#     def set_type(self, cell_type):
+#         self.cell_type = cell_type
+#         self.update_ui()
     
-    def update_ui(self):
-        if self.cell_type == CellType.BG:
-            pass
-        elif self.cell_type == CellType.SNAKE:
-            self._draw_snake()
-        elif self.cell_type == CellType.FOOD:
-            self._draw_food()
+#     def update_ui(self):
+#         if self.cell_type == CellType.BG:
+#             pass
+#         elif self.cell_type == CellType.SNAKE:
+#             self._draw_snake()
+#         elif self.cell_type == CellType.FOOD:
+#             self._draw_food()
 
-    def _draw_snake(self):
-        self._draw_cell(BLUE1, self.size)
-        self._draw_cell(BLUE2, self.size, self.size - 8)
+#     def _draw_snake(self):
+#         self._draw_cell(BLUE1, self.size)
+#         self._draw_cell(BLUE2, self.size, self.size - 8)
 
-    def _draw_food(self):
-        self._draw_cell(RED, self.size)
+#     def _draw_food(self):
+#         self._draw_cell(RED, self.size)
 
-    def _draw_cell(self, colour, scale):
-        pygame.draw.rect(self.display, colour, pygame.Rect(self.coord.x, self.coord.y, scale, scale))
+#     def _draw_cell(self, colour, scale):
+#         pygame.draw.rect(self.display, colour, pygame.Rect(self.coord.x, self.coord.y, scale, scale))
 
 
-class CellGrid:
-    def __init__(self, display, scale = 1, width = 64, height = 48):
-        self.scale = scale
-        self.width = width
-        self.height = height
-        self.display = display
-        self.cells = []
+# class CellGrid:
+#     def __init__(self, display, scale = 1, width = 64, height = 48):
+#         self.scale = scale
+#         self.width = width
+#         self.height = height
+#         self.display = display
+#         self.cells = []
 
-    def create_grid(self):
-        for x, y in zip(self.width, self.height):
-            self.cells.append(Cell(x, y, self.display))
-        return self.cells
+#     def create_grid(self):
+#         for x, y in zip(self.width, self.height):
+#             self.cells.append(Cell(x, y, self.display))
+#         return self.cells
 
-    def get_cell(self, x, y):
-        for cell in self.cells:
-            if cell.x == x and cell.y == y:
-                return cell
+#     def get_cell(self, x, y):
+#         for cell in self.cells:
+#             if cell.x == x and cell.y == y:
+#                 return cell
 
-    def set_cell_type(self, cell, cell_type):
-        cell.set_type(cell_type)
+#     def set_cell_type(self, cell, cell_type):
+#         cell.set_type(cell_type)
 
-    
+#     def get_cells_if_empty(self):
+#         pass
+
+#     def get_cells_if_food(self):
+#         pass
+
+#     def get_cells_if_
 
 
 
